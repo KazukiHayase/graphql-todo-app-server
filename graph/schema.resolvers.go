@@ -65,13 +65,27 @@ func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input mode
 }
 
 // Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+func (r *queryResolver) Todos(ctx context.Context, userID *string) ([]*model.Todo, error) {
 	r.wait()
+
 	var todos []*model.Todo
-	for _, u := range r.users {
-		for _, t := range u.Todos {
-			tmp := *t
-			todos = append(todos, &tmp)
+	if userID != nil {
+		for _, u := range r.users {
+			if u.ID != *userID {
+				continue
+			}
+
+			for _, t := range u.Todos {
+				tmp := *t
+				todos = append(todos, &tmp)
+			}
+		}
+	} else {
+		for _, u := range r.users {
+			for _, t := range u.Todos {
+				tmp := *t
+				todos = append(todos, &tmp)
+			}
 		}
 	}
 
