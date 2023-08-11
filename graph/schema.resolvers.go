@@ -17,8 +17,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	var user *model.User
 	for _, u := range r.users {
 		if u.ID == input.UserID {
-			tmp := u
-			user = &tmp
+			user = u
 		}
 	}
 
@@ -72,15 +71,21 @@ func (r *queryResolver) Todos(ctx context.Context, userID *string) ([]*model.Tod
 
 	var todos []*model.Todo
 	if userID != nil {
+		var user *model.User
 		for _, u := range r.users {
-			if u.ID != *userID {
-				continue
+			if u.ID == *userID {
+				user = u
+				break
 			}
+		}
 
-			for _, t := range u.Todos {
-				tmp := *t
-				todos = append(todos, &tmp)
-			}
+		if user == nil {
+			return nil, fmt.Errorf("User not found")
+		}
+
+		for _, t := range user.Todos {
+			tmp := *t
+			todos = append(todos, &tmp)
 		}
 	} else {
 		for _, u := range r.users {
@@ -100,8 +105,7 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 	var user *model.User
 	for _, u := range r.users {
 		if u.ID == id {
-			tmp := u
-			user = &tmp
+			user = u
 		}
 	}
 

@@ -12,7 +12,7 @@ import (
 
 func NewResolver() *Resolver {
 	return &Resolver{
-		users: []model.User{
+		users: []*model.User{
 			{
 				ID:    "1",
 				Name:  "User1",
@@ -28,7 +28,7 @@ func NewResolver() *Resolver {
 }
 
 type Resolver struct {
-	users []model.User
+	users []*model.User
 }
 
 func (r *Resolver) wait() {
