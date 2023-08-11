@@ -13,6 +13,7 @@ import (
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+	r.wait()
 	var user *model.User
 	for _, u := range r.users {
 		if u.ID == input.UserID {
@@ -38,6 +39,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 // UpdateTodo is the resolver for the updateTodo field.
 func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input model.UpdateTodo) (*model.Todo, error) {
+	r.wait()
 	var todo *model.Todo
 	for _, u := range r.users {
 		for _, t := range u.Todos {
@@ -64,6 +66,7 @@ func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input mode
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	r.wait()
 	var todos []*model.Todo
 	for _, u := range r.users {
 		for _, t := range u.Todos {
@@ -77,6 +80,7 @@ func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+	r.wait()
 	var user *model.User
 	for _, u := range r.users {
 		if u.ID == id {
