@@ -14,9 +14,13 @@ func NewResolver() *Resolver {
 	return &Resolver{
 		users: []*model.User{
 			{
-				ID:    "1",
-				Name:  "User1",
-				Todos: []*model.Todo{},
+				ID:   "1",
+				Name: "User1",
+				Todos: []*model.Todo{
+					{ID: "1", Text: "Todo1", Done: false},
+					{ID: "2", Text: "Todo2", Done: false},
+					{ID: "3", Text: "Todo3", Done: false},
+				},
 			},
 			{
 				ID:    "2",
