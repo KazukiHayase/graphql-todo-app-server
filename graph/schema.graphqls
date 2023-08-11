@@ -20,16 +20,17 @@ type Query {
 }
 
 input NewTodo {
-  userId: String!
+  userId: ID!
   text: String!
 }
 
 input UpdateTodo {
+  id: ID!
   text: String
   done: Boolean
 }
 
 type Mutation {
   createTodo(input: NewTodo!): Todo!
-  updateTodo(id: ID!, input: UpdateTodo!): Todo!
+  updateTodo(input: UpdateTodo!): Todo!
 }

@@ -14,6 +14,7 @@ type Todo struct {
 }
 
 type UpdateTodo struct {
+	ID   string  `json:"id"`
 	Text *string `json:"text,omitempty"`
 	Done *bool   `json:"done,omitempty"`
 }

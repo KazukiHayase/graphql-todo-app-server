@@ -27,7 +27,7 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 	}
 
 	todo := &model.Todo{
-		ID:   fmt.Sprintf("T%d", len(user.Todos)+1),
+		ID:   fmt.Sprintf("%d", len(user.Todos)+1),
 		Text: input.Text,
 		Done: false,
 	}
@@ -38,14 +38,16 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 }
 
 // UpdateTodo is the resolver for the updateTodo field.
-func (r *mutationResolver) UpdateTodo(ctx context.Context, id string, input model.UpdateTodo) (*model.Todo, error) {
+func (r *mutationResolver) UpdateTodo(ctx context.Context, input model.UpdateTodo) (*model.Todo, error) {
 	r.wait()
 	var todo *model.Todo
+UserLoop:
 	for _, u := range r.users {
 		for _, t := range u.Todos {
-			if t.ID == id {
+			if t.ID == input.ID {
 				tmp := *t
 				todo = &tmp
+				break UserLoop
 			}
 		}
 	}
